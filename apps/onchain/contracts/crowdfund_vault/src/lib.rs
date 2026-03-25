@@ -58,7 +58,9 @@ impl CrowdfundVaultContract {
             tvl: 0i128,
             cumulative_volume: 0i128,
         };
-        env.storage().instance().set(&DataKey::ProtocolStats, &initial_stats);
+        env.storage()
+            .instance()
+            .set(&DataKey::ProtocolStats, &initial_stats);
 
         // Emit initialization event
         events::InitializedEvent { admin }.publish(&env);
@@ -360,10 +362,19 @@ impl CrowdfundVaultContract {
             .set(&DataKey::Project(project_id), &project);
 
         // Update global protocol stats
-        let mut stats: ProtocolStats = env.storage().instance().get(&DataKey::ProtocolStats).unwrap_or(ProtocolStats { tvl: 0, cumulative_volume: 0 });
+        let mut stats: ProtocolStats = env
+            .storage()
+            .instance()
+            .get(&DataKey::ProtocolStats)
+            .unwrap_or(ProtocolStats {
+                tvl: 0,
+                cumulative_volume: 0,
+            });
         stats.tvl += amount;
         stats.cumulative_volume += amount;
-        env.storage().instance().set(&DataKey::ProtocolStats, &stats);
+        env.storage()
+            .instance()
+            .set(&DataKey::ProtocolStats, &stats);
 
         // Emit deposit event
         events::DepositEvent {
@@ -658,9 +669,18 @@ impl CrowdfundVaultContract {
             .set(&DataKey::Project(project_id), &project);
 
         // Update global protocol stats - withdraw reduces TVL only
-        let mut stats: ProtocolStats = env.storage().instance().get(&DataKey::ProtocolStats).unwrap_or(ProtocolStats { tvl: 0, cumulative_volume: 0 });
+        let mut stats: ProtocolStats = env
+            .storage()
+            .instance()
+            .get(&DataKey::ProtocolStats)
+            .unwrap_or(ProtocolStats {
+                tvl: 0,
+                cumulative_volume: 0,
+            });
         stats.tvl -= amount;
-        env.storage().instance().set(&DataKey::ProtocolStats, &stats);
+        env.storage()
+            .instance()
+            .set(&DataKey::ProtocolStats, &stats);
 
         // Emit withdraw event
         events::WithdrawEvent {
@@ -948,10 +968,19 @@ impl CrowdfundVaultContract {
             .set(&DataKey::Project(project_id), &project);
 
         // Update global protocol stats
-        let mut stats: ProtocolStats = env.storage().instance().get(&DataKey::ProtocolStats).unwrap_or(ProtocolStats { tvl: 0, cumulative_volume: 0 });
+        let mut stats: ProtocolStats = env
+            .storage()
+            .instance()
+            .get(&DataKey::ProtocolStats)
+            .unwrap_or(ProtocolStats {
+                tvl: 0,
+                cumulative_volume: 0,
+            });
         stats.tvl += actual_match;
         stats.cumulative_volume += actual_match;
-        env.storage().instance().set(&DataKey::ProtocolStats, &stats);
+        env.storage()
+            .instance()
+            .set(&DataKey::ProtocolStats, &stats);
 
         Ok(actual_match)
     }
@@ -1160,7 +1189,10 @@ impl CrowdfundVaultContract {
         if !env.storage().instance().has(&DataKey::Admin) {
             return Err(CrowdfundError::NotInitialized);
         }
-        let stats: ProtocolStats = env.storage().instance().get(&DataKey::ProtocolStats)
+        let stats: ProtocolStats = env
+            .storage()
+            .instance()
+            .get(&DataKey::ProtocolStats)
             .ok_or(CrowdfundError::NotInitialized)?;
         Ok((stats.tvl, stats.cumulative_volume))
     }
