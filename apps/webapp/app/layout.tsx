@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LumenPulse - Decentralized Crypto News Platform",
     description: "Your trusted source for crypto news, trends, and insights powered by Stellar.",
-    url: "https://starkpulse.app",
+    url: "https://lumenpulse.app",
     siteName: "LumenPulse",
     images: [
       {
